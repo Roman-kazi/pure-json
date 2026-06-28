@@ -28,7 +28,7 @@ pip install pure-json
 
 ## Quick Start
 
-```python
+````python
 from pure_json import extract
 
 messy_output = """
@@ -47,7 +47,7 @@ Let me know if you need anything else!
 parsed_data = extract(messy_output)
 print(parsed_data)
 # Output: {'status': 'success', 'error_code': None, 'data': [1, 2, 3]}
-```
+````
 
 ## API Reference
 
