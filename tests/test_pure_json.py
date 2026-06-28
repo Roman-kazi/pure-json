@@ -48,3 +48,15 @@ def test_healing_failure():
     text = '{"a": 1, "b": UnquotedString}'
     with pytest.raises(JSONHealingError, match="Failed to parse JSON even after healing"):
         extract(text)
+
+def test_single_quotes():
+    text = "{'key': 'value', 'escaped': 'it\\'s fine'}"
+    assert extract(text) == {"key": "value", "escaped": "it's fine"}
+
+def test_unquoted_keys():
+    text = '{key: "value", _id123: 1}'
+    assert extract(text) == {"key": "value", "_id123": 1}
+
+def test_single_quotes_and_unquoted_keys():
+    text = "{status: 'ok', msg: 'all good'}"
+    assert extract(text) == {"status": "ok", "msg": "all good"}

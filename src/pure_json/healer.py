@@ -15,7 +15,28 @@ def heal_json(text: str) -> str:
         text = re.sub(pattern_comma, '', text)
         logger.debug("Healed trailing comma(s).")
         
-    # 2. Fix unquoted Python booleans and None
+    # 2. Fix single-quoted strings and keys
+    pattern_single_quotes = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
+    
+    def _replace_single_quotes(m: re.Match) -> str:
+        inner = m.group(1)
+        # Unescape \' to '
+        inner = inner.replace("\\'", "'")
+        # Escape " to \"
+        inner = inner.replace('"', '\\"')
+        return f'"{inner}"'
+        
+    if re.search(pattern_single_quotes, text):
+        text = re.sub(pattern_single_quotes, _replace_single_quotes, text)
+        logger.debug("Healed single quotes to double quotes.")
+
+    # 3. Fix unquoted keys
+    pattern_unquoted_keys = r'([{,]\s*)([a-zA-Z_][a-zA-Z0-9_]*)\s*:'
+    if re.search(pattern_unquoted_keys, text):
+        text = re.sub(pattern_unquoted_keys, r'\1"\2":', text)
+        logger.debug("Healed unquoted keys.")
+
+    # 4. Fix unquoted Python booleans and None
     replacements = [
         (r'(:\s*|,\s*|\[\s*)True\b', r'\g<1>true', 'True -> true'),
         (r'(:\s*|,\s*|\[\s*)False\b', r'\g<1>false', 'False -> false'),
