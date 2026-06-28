@@ -1,4 +1,22 @@
+# Environments
+.env
+.venv
+env/
 venv/
+
+# Python build artifacts
+*.py[cod]
 __pycache__/
 *.pyc
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Testing
 .pytest_cache/
+test_results/
+
+# IDEs
+.vscode/
+.idea/
