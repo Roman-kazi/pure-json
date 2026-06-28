@@ -2,6 +2,7 @@
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI - Version](https://img.shields.io/pypi/v/pure-json.svg)](https://pypi.org/project/pure-json/)
 
 `pure-json` is a lightweight, zero-dependency Python library designed to extract, clean, and parse JSON from messy Large Language Model (LLM) string outputs. 
 
@@ -21,8 +22,6 @@ LLMs frequently return JSON surrounded by conversational fluff (e.g., "Here is y
 - **Strict Mode**: Optional mode to fail fast on invalid JSON if you prefer to trigger an LLM retry instead of auto-healing.
 
 ## Installation
-
-*(Note: Currently in development. Will be available on PyPI soon.)*
 
 ```bash
 pip install pure-json
