@@ -1,5 +1,5 @@
 import pytest
-from pure_json import extract, JSONExtractionError, JSONHealingError
+from pure_json import extract, extract_all, JSONExtractionError, JSONHealingError, JSONValidationError
 
 def test_clean_json():
     text = '{"key": "value"}'
@@ -60,3 +60,25 @@ def test_unquoted_keys():
 def test_single_quotes_and_unquoted_keys():
     text = "{status: 'ok', msg: 'all good'}"
     assert extract(text) == {"status": "ok", "msg": "all good"}
+
+def test_extract_all_multiple_blocks():
+    text = 'Here is block 1: {"id": 1} And block 2: [1, 2, 3] and finally {"a": "b"}'
+    results = extract_all(text)
+    assert len(results) == 3
+    assert results[0] == {"id": 1}
+    assert results[1] == [1, 2, 3]
+    assert results[2] == {"a": "b"}
+
+def test_schema_validation_success():
+    text = '{"name": "Alice", "age": 30}'
+    assert extract(text, required_keys=["name"]) == {"name": "Alice", "age": 30}
+
+def test_schema_validation_missing_keys():
+    text = '{"name": "Alice"}'
+    with pytest.raises(JSONValidationError, match="Missing required keys: \\['age'\\]"):
+        extract(text, required_keys=["name", "age"])
+
+def test_state_machine_safety():
+    # Ensuring { inside strings don't break the extractor
+    text = 'Fluff {"key": "{ fake start"} Fluff'
+    assert extract(text) == {"key": "{ fake start"}

@@ -1,4 +1,4 @@
-from .core import extract
-from .exceptions import JSONExtractionError, JSONHealingError
+from .core import extract, extract_all
+from .exceptions import JSONExtractionError, JSONHealingError, JSONValidationError
 
-__all__ = ["extract", "JSONExtractionError", "JSONHealingError"]
+__all__ = ["extract", "extract_all", "JSONExtractionError", "JSONHealingError", "JSONValidationError"]
